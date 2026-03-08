@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifas Javier López</title>
+    <style>
+        :root { --primario: #25D366; --vendido: #ff4d4d; --libre: #ffffff; --fondo: #f8f9fa; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background-color: var(--fondo); margin: 0; padding: 0; }
+        
+        /* Encabezado Fijo */
+        .header { 
+            position: sticky; top: 0; background: white; padding: 15px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 100; 
+        }
+        h1 { color: #1a1a1a; margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .leyenda { display: flex; justify-content: center; gap: 15px; margin-top: 10px; font-size: 0.9em; font-weight: bold; }
+        .cuadro { width: 14px; height: 14px; display: inline-block; border-radius: 3px; vertical-align: middle; margin-right: 5px; }
+
+        /* Contenedor de boletos */
+        .grid-boletos { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); 
+            gap: 10px; max-width: 1000px; margin: 20px auto; padding: 15px;
+        }
+
+        .boleto { 
+            aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
+            border: 1px solid #ddd; border-radius: 10px; font-size: 0.9em; font-weight: bold;
+            cursor: pointer; transition: all 0.2s ease; box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Estados */
+        .libre { background-color: var(--libre); color: #333; }
+        .libre:hover { background-color: #e8f5e9; border-color: var(--primario); transform: translateY(-3px); }
+        .vendido { background-color: var(--vendido); color: white; border: none; cursor: not-allowed; opacity: 0.6; }
+
+        p.instrucciones { color: #555; margin-top: 20px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🎟️ Rifas Javier López</h1>
+        <div class="leyenda">
+            <span><div class="cuadro" style="background: var(--libre); border: 1px solid #ccc;"></div> Libre</span>
+            <span><div class="cuadro" style="background: var(--vendido);"></div> Vendido</span>
+        </div>
+    </div>
+
+    <p class="instrucciones">Selecciona el número que deseas comprar:</p>
+
+    <div class="grid-boletos" id="tablero">
+        </div>
+
+    <script>
+        // --- CONFIGURACIÓN ---
+        const miTelefono = "526361168244"; // CAMBIA ESTO por tu número real
+        const totalBoletos = 450;
+        
+        // AGREGA AQUÍ LOS NÚMEROS YA PAGADOS (separados por coma)
+        const listaVendidos = [7, 13, 22, 100, 350, 449]; 
+
+        // --- GENERADOR ---
+        const tablero = document.getElementById('tablero');
+
+        for (let i = 1; i <= totalBoletos; i++) {
+            const btn = document.createElement('div');
+            btn.innerText = i;
+            btn.classList.add('boleto');
+
+            if (listaVendidos.includes(i)) {
+                btn.classList.add('vendido');
+            } else {
+                btn.classList.add('libre');
+                btn.onclick = () => {
+                    const mensaje = `¡Hola Javier! Me interesa el boleto número ${i}. ¿Me pasas la información para pagar?`;
+                    window.open(`https://wa.me/${miTelefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+                };
+            }
+            tablero.appendChild(btn);
+        }
+    </script>
+</body>
+</html>
